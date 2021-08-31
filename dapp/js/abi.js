@@ -1,18 +1,4 @@
-const abi =[
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getTotal",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
+const abi = [
 	{
 		"constant": true,
 		"inputs": [
@@ -21,19 +7,27 @@ const abi =[
 				"type": "uint256"
 			}
 		],
-		"name": "products",
+		"name": "posts",
 		"outputs": [
 			{
-				"name": "productName",
-				"type": "string"
-			},
-			{
-				"name": "locaton",
-				"type": "string"
-			},
-			{
-				"name": "count",
+				"name": "Num",
 				"type": "uint256"
+			},
+			{
+				"name": "UserName",
+				"type": "string"
+			},
+			{
+				"name": "UserPW",
+				"type": "string"
+			},
+			{
+				"name": "Title",
+				"type": "string"
+			},
+			{
+				"name": "maintext",
+				"type": "string"
 			},
 			{
 				"name": "timestamp",
@@ -52,19 +46,23 @@ const abi =[
 				"type": "uint256"
 			}
 		],
-		"name": "getProduct",
+		"name": "getPost",
 		"outputs": [
 			{
 				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
 				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
 			},
 			{
 				"name": "",
@@ -79,22 +77,40 @@ const abi =[
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_productName",
+				"name": "_UserName",
 				"type": "string"
 			},
 			{
-				"name": "_location",
+				"name": "_UserPW",
 				"type": "string"
 			},
 			{
-				"name": "_count",
-				"type": "uint256"
+				"name": "_Title",
+				"type": "string"
+			},
+			{
+				"name": "_maintext",
+				"type": "string"
 			}
 		],
-		"name": "addProduct",
+		"name": "addPost",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getTotal",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -102,18 +118,28 @@ const abi =[
 		"inputs": [
 			{
 				"indexed": false,
-				"name": "productName",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "location",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"name": "count",
+				"name": "Num",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "UserName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "UserPW",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "Title",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "maintext",
+				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -121,7 +147,7 @@ const abi =[
 				"type": "uint256"
 			}
 		],
-		"name": "product",
+		"name": "post",
 		"type": "event"
 	}
-]
+];

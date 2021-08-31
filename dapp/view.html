@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JO Chain</title>
+    <link rel="stylesheet" href="css/css.css">
+</head>
+<body onload="ShowContent()">
+    <div class="board_wrap">
+        <div class="board_title">
+            <strong>JO Chain</strong>
+            <p>JO Chain은 나장호, 오성현의 프로젝트 팀입니다.</p>
+        </div>
+        <div class="board_view_wrap">
+            <div class="board_view">
+               <div class="title" id="subject">
+                   글의 제목이 들어와야합니다
+               </div>
+               <div class="info">
+                <dl>
+                    <dt>글쓴이</dt>
+                    <dd id="name">test_user_name</dd>
+                </dl>
+                <dl>
+                    <dt>계정</dt>
+                    <dd id="account">0x00000000</dd>
+                </dl>
+                <dl>
+                    <dt>작성일</dt>
+                    <dd>2021.00.00</dd>
+                </dl>
+                <dl>
+                    <dt>조회</dt>
+                    <dd>##</dd>
+                </dl>
+               </div>
+               <div class="cont" id="content">
+                   글 내용이 들어갑니다<br>
+                   글 내용이 들어갑니다<br>
+                   글 내용이 들어갑니다<br>
+                   글 내용이 들어갑니다<br>
+                   글 내용이 들어갑니다<br>
+                   글 내용이 들어갑니다<br>
+                   글 내용이 들어갑니다
+               </div>
+            </div>
+           
+            <div class="bt_wrap">
+                <a href="list.html" class="on">목록</a>
+                <a href="edit.html">수정</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+    integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="./js/lib/web3-light@0.20.6.js"></script>
+  <script type="text/javascript" src="./js/lib/moment.js"></script>
+  <script type="text/javascript" src="./js/lib/moment_locale.js"></script>
+  <script type="text/javascript" src="./js/abi.js"></script>
+  <script type="text/javascript" src="./js/app.js"></script>
+</body>
+</html>

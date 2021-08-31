@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JO Chain</title>
+    <link rel="stylesheet" href="css/css.css">
+</head>
+<body>
+    <div class="board_wrap">
+        <div class="board_title">
+            <strong>JO Chain</strong>
+            <p>JO Chain은 나장호, 오성현의 프로젝트 팀입니다.</p>
+        </div>
+        <div class="board_write_wrap">
+            <div class="board_write">
+                <div class="title">
+                    <dl>
+                        <dt>제목</dt>
+                        <dd><input type="text" id="subject" placeholder="제목 입력"></dd>
+                    </dl>
+                </div>
+                <div class="account">
+                    <dl>
+                        <dt>계정</dt>
+                        <dd><input type="text" id="account" placeholder="주소를 입력해주세요"></dd>
+                    </dl>
+                </div>
+                <div class="info">
+                    <dl>
+                        <dt>글쓴이</dt>
+                        <dd><input type="text" id="name" placeholder="글쓴이 입력"></dd>
+                    </dl>
+                    <dl>
+                        <dt>비밀번호</dt>
+                        <dd><input type="password" id="password" placeholder="비밀번호 입력"></dd>
+                    </dl>
+                </div>
+                <div class="cont">
+                    <textarea id="content" placeholder="내용 입력"></textarea>
+                </div>
+            </div>
+            
+            <div class="bt_wrap">
+                <a href="view.html" class="on" onclick="addPost()">등록</a>
+                <a href="list.html">취소</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+    integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="./js/lib/web3-light@0.20.6.js"></script>
+  <script type="text/javascript" src="./js/lib/moment.js"></script>
+  <script type="text/javascript" src="./js/lib/moment_locale.js"></script>
+  <script type="text/javascript" src="./js/abi.js"></script>
+  <script type="text/javascript" src="./js/app.js"></script>
+</body>
+</html>
