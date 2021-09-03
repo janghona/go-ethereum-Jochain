@@ -29,20 +29,20 @@
                 </dl>
                 <dl>
                     <dt>작성일</dt>
-                    <dd>2021.00.00</dd>
+                    <dd id="date">2021.00.00</dd>
                 </dl>
                 <dl>
                     <dt>조회</dt>
-                    <dd>##</dd>
+                    <dd id="views">##</dd>
                 </dl>
                </div>
-               <div class="cont" id="content">
-                   글 내용이 들어갑니다<br>
-                   글 내용이 들어갑니다<br>
-                   글 내용이 들어갑니다<br>
-                   글 내용이 들어갑니다<br>
-                   글 내용이 들어갑니다<br>
-                   글 내용이 들어갑니다<br>
+               <div class="content" id="content">
+                   글 내용이 들어갑니다 <br>
+                   글 내용이 들어갑니다 <br>
+                   글 내용이 들어갑니다 <br>
+                   글 내용이 들어갑니다 <br>
+                   글 내용이 들어갑니다 <br>
+                   글 내용이 들어갑니다 <br>
                    글 내용이 들어갑니다
                </div>
             </div>
@@ -63,3 +63,13 @@
   <script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>
+
+<!--
+php 서버코드로 MySQL DB에 connect하는 코드를 어디에 놓을지 고민중에있음
+매 html 코드마다 하나씩 해야할지 한곳에서 관리를 할지 생각중
+<?php 
+//$conn = mysqli_connect('127.0.0.1','root','bitnami', 'jochain');
+$sql = "SELECT * FROM customer";
+mysqli_query($conn,$sql);
+?>
+-->
