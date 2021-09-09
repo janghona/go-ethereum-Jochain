@@ -20,6 +20,7 @@
                         <dt>제목</dt>
                         <dd><input type="text" id="subject" placeholder="제목 입력" value="글 제목이 들어갑니다."></dd>
                     </dl>
+                </div>
                 <div class="account">
                     <dl>
                         <dt>계정</dt>
@@ -36,21 +37,21 @@
                         <dd><input type="password" id="password" placeholder="비밀번호 입력" value="1234"></dd>
                     </dl>
                 </div>
-                <div class="content">
+                <div class="cont">
                     <textarea id="content" placeholder="내용 입력">
-글 내용이 들어갑니다.
-글 내용이 들어갑니다.
-글 내용이 들어갑니다.
-글 내용이 들어갑니다.
-글 내용이 들어갑니다.
-글 내용이 들어갑니다.
-글 내용이 들어갑니다.
+글 내용이 들어갑니다. edit.html
+글 내용이 들어갑니다. edit.html
+글 내용이 들어갑니다. edit.html
+글 내용이 들어갑니다. edit.html
+글 내용이 들어갑니다. edit.html
+글 내용이 들어갑니다. edit.html
+글 내용이 들어갑니다. edit.html
                     </textarea>
                 </div>
             </div>
             
             <div class="bt_wrap">
-                <a href="view.html" class="correct">수정</a>
+                <a href="view.html" class="on">수정</a>
                 <a href="view.html">취소</a>
             </div>
         </div>
@@ -65,13 +66,3 @@
   <script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>
-
-<!--
-php 서버코드로 MySQL DB에 connect하는 코드를 어디에 놓을지 고민중에있음
-매 html 코드마다 하나씩 해야할지 한곳에서 관리를 할지 생각중
-<?php 
-//$conn = mysqli_connect('127.0.0.1','root','bitnami', 'jochain');
-$sql = "SELECT * FROM customer";
-mysqli_query($conn,$sql);
-?>
--->

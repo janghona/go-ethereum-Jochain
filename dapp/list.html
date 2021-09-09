@@ -7,7 +7,7 @@
     <title>JO Chain</title>
     <link rel="stylesheet" href="css/css.css">
 </head>
-<body>
+<body onload="PrintList()">
     <div class="board_wrap">
         <div class="board_title">
             <strong>JO Chain</strong>
@@ -18,29 +18,21 @@
                 <div class="top">
                     <div class="num">번호</div>
                     <div class="title">제목</div>
-                    <div class="name">글쓴이</div>
+                    <div class="writer">글쓴이</div>
                     <div class="account">계정</div>
                     <div class="date">작성일</div>
                     <div class="count">조회</div>
                 </div>
 
                 <div>
-                    <div class="num">1</div>
-                    <div class="title"><a href="view.html">test_title</a></div>
-                    <div class="writer">test_user</div>
-                    <div class="account">0x00000000</div>
-                    <div class="date">2021.00.00</div>
-                    <div class="views">##</div>
+                    <div class="num" id="num">1</div>
+                    <div class="title" id="subject"><a href="view.html">test_title</a></div>
+                    <div class="writer" id="name">test_user</div>
+                    <div class="account" id="account">0x00000</div>
+                    <div class="date" id="date">2021.00.00</div>
+                    <div class="count">##</div>
                 </div>
 
-                <div>
-                    <div class="num">2</div>
-                    <div class="title"><a href="view.html">test_title2</a></div>
-                    <div class="writer">test_user2</div>
-                    <div class="account">0x00000000</div>
-                    <div class="date">2021.00.00</div>
-                    <div class="views">##</div>
-                </div>
 
             </div>
             <div class="board_page">
@@ -70,13 +62,3 @@
   <script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>
-
-<!--
-php 서버코드로 MySQL DB에 connect하는 코드를 어디에 놓을지 고민중에있음
-매 html 코드마다 하나씩 해야할지 한곳에서 관리를 할지 생각중
-<?php 
-//$conn = mysqli_connect('127.0.0.1','root','bitnami', 'jochain');
-$sql = "SELECT * FROM customer";
-mysqli_query($conn,$sql);
-?>
--->

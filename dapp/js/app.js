@@ -9,14 +9,44 @@ if (web3.isConnected()) {
   exit;
 }
 
-const contractAddress = "0x70781D7B3e5E512894E6CEdaf9D739E757daaFd9";
+const contractAddress = "0x24db68325B91f28945DD73838d2aC8D590F46b64";
 const smartContract = web3.eth.contract(abi).at(contractAddress);
-const num = 0;
+var num = 0;
 
 function init() {
     // 첫번째 계정으로 주소 설정
     $("#account").val(web3.eth.accounts[0]);
     moment.locale();
+  }
+
+  async function showList() {
+     const table = document.getElementById("table1");
+     const total = smartContract.getTotal().toString();
+
+    i = $("#num").val()-1;
+    num = i;
+    alert("showList i" + i + "num" + num);
+
+      const post = await smartContract.getPost(i);
+      const toString = await post.toString();
+      const strArray = toString.split(",");
+  
+      const time = strArray[4] * 1000;
+      const row = table.insertRow();
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      const cell3 = row.insertCell(2);
+     const cell4 = row.insertCell(3);
+     const cell5 = row.insertCell(4);
+     const cell6 = row.insertCell(5);
+      cell1.innerHTML = strArray[0];
+      cell2.innerHTML = strArray[1];
+      cell3.innerHTML = strArray[2];
+     cell4.innerHTML = strArray[3];
+     cell6.innerHTML = strArray[4];
+     cell5.style.width = "60%";
+     cell5.innerHTML = moment(time).format("YYYY-MM-DD hh:mm");
+    
   }
 
 
@@ -36,19 +66,48 @@ function init() {
      num = smartContract.getTotal();
   }
 
+   async function PrintView(){
 
-  function ShowContent(){
+    num = smartContract.getTotal();
 
-    //  const post = await smartContract.getPost($("#num").val());
-    // const post = await smartContract.getPost(0);
-    // const toString = await post.toString();
-    // const strArray = toString.split(",");
-  
-    // const time = strArray[4] * 1000;
-    // $("#name").val(strArray[1]);
-    // $("#subject").val(strArray[2]);
-    // $("#content").val(strArray[3]);
-  
+    const post = await smartContract.getPost(num-1);
+     const toString = await post.toString();
+    const strArray = toString.split(",");
+
+    const time = strArray[4] * 1000;
+    document.getElementById("num").innerText =strArray[0];
+    // document.getElementById("name").innerText =strArray[0];
+    document.getElementById("name").innerText ="testUser";
+    document.getElementById("subject").innerText =strArray[1];
+    document.getElementById("account").innerText =web3.eth.accounts[0];
+    document.getElementById("date").innerText = moment(time).format("YYYY-MM-DD hh:mm");
+    
+    document.getElementById("content").innerText =strArray[3];
+
+     alert("printSubject num" + num);
+   }
+
+
+   async function PrintList(){
+
+    num = smartContract.getTotal();
+
+
+    const post = await smartContract.getPost(num-1);
+     const toString = await post.toString();
+    const strArray = toString.split(",");
+
+    const time = strArray[4] * 1000;
+    document.getElementById("num").innerText =strArray[0];
+    // document.getElementById("name").innerText =strArray[0];
+    document.getElementById("name").innerText ="testUser";
+    document.getElementById("subject").innerText =strArray[1];
+    document.getElementById("account").innerText =web3.eth.accounts[0];
+    document.getElementById("date").innerText = moment(time).format("YYYY-MM-DD");
+    
+    document.getElementById("content").innerText =strArray[3];
+    
+     alert("printSubject num" + num);
    }
 
   $(function() {
