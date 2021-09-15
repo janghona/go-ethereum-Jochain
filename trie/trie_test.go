@@ -569,7 +569,7 @@ func BenchmarkCommitAfterHash(b *testing.B) {
 		benchmarkCommitAfterHash(b, nil)
 	})
 	var a account
-	onleaf := func(paths [][]byte, hexpath []byte, leaf []byte, parent common.Hash) error {
+	onleaf := func(path []byte, leaf []byte, parent common.Hash) error {
 		rlp.DecodeBytes(leaf, &a)
 		return nil
 	}
@@ -830,8 +830,8 @@ func TestCommitSequenceStackTrie(t *testing.T) {
 				val = make([]byte, 1+prng.Intn(1024))
 			}
 			prng.Read(val)
-			trie.TryUpdate(key, val)
-			stTrie.TryUpdate(key, val)
+			trie.TryUpdate(key, common.CopyBytes(val))
+			stTrie.TryUpdate(key, common.CopyBytes(val))
 		}
 		// Flush trie -> database
 		root, _ := trie.Commit(nil)
@@ -1060,7 +1060,7 @@ func tempDB() (string, *Database) {
 	if err != nil {
 		panic(fmt.Sprintf("can't create temporary directory: %v", err))
 	}
-	diskdb, err := leveldb.New(dir, 256, 0, "", false)
+	diskdb, err := leveldb.New(dir, 256, 0, "")
 	if err != nil {
 		panic(fmt.Sprintf("can't create temporary database: %v", err))
 	}

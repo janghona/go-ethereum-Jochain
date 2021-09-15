@@ -85,9 +85,6 @@ var (
 
 	twitterTokenFlag   = flag.String("twitter.token", "", "Bearer token to authenticate with the v2 Twitter API")
 	twitterTokenV1Flag = flag.String("twitter.token.v1", "", "Bearer token to authenticate with the v1.1 Twitter API")
-
-	goerliFlag  = flag.Bool("goerli", false, "Initializes the faucet with Görli network config")
-	rinkebyFlag = flag.Bool("rinkeby", false, "Initializes the faucet with Rinkeby network config")
 )
 
 var (
@@ -147,9 +144,13 @@ func main() {
 		log.Crit("Failed to render the faucet template", "err", err)
 	}
 	// Load and parse the genesis block requested by the user
-	genesis, err := getGenesis(genesisFlag, *goerliFlag, *rinkebyFlag)
+	blob, err := ioutil.ReadFile(*genesisFlag)
 	if err != nil {
-		log.Crit("Failed to parse genesis config", "err", err)
+		log.Crit("Failed to read genesis block contents", "genesis", *genesisFlag, "err", err)
+	}
+	genesis := new(core.Genesis)
+	if err = json.Unmarshal(blob, genesis); err != nil {
+		log.Crit("Failed to parse genesis block json", "err", err)
 	}
 	// Convert the bootnodes to internal enode representations
 	var enodes []*enode.Node
@@ -161,8 +162,7 @@ func main() {
 		}
 	}
 	// Load up the account key and decrypt its password
-	blob, err := ioutil.ReadFile(*accPassFlag)
-	if err != nil {
+	if blob, err = ioutil.ReadFile(*accPassFlag); err != nil {
 		log.Crit("Failed to read account password contents", "file", *accPassFlag, "err", err)
 	}
 	pass := strings.TrimSuffix(string(blob), "\n")
@@ -883,20 +883,4 @@ func authNoAuth(url string) (string, string, common.Address, error) {
 		return "", "", common.Address{}, errors.New("No Ethereum address found to fund")
 	}
 	return address.Hex() + "@noauth", "", address, nil
-}
-
-// getGenesis returns a genesis based on input args
-func getGenesis(genesisFlag *string, goerliFlag bool, rinkebyFlag bool) (*core.Genesis, error) {
-	switch {
-	case genesisFlag != nil:
-		var genesis core.Genesis
-		err := common.LoadJSON(*genesisFlag, &genesis)
-		return &genesis, err
-	case goerliFlag:
-		return core.DefaultGoerliGenesisBlock(), nil
-	case rinkebyFlag:
-		return core.DefaultRinkebyGenesisBlock(), nil
-	default:
-		return nil, fmt.Errorf("no genesis flag provided")
-	}
 }

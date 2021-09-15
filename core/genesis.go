@@ -62,7 +62,6 @@ type Genesis struct {
 	Number     uint64      `json:"number"`
 	GasUsed    uint64      `json:"gasUsed"`
 	ParentHash common.Hash `json:"parentHash"`
-	BaseFee    *big.Int    `json:"baseFeePerGas"`
 }
 
 // GenesisAlloc specifies the initial state that is part of the genesis block.
@@ -98,7 +97,6 @@ type genesisSpecMarshaling struct {
 	GasUsed    math.HexOrDecimal64
 	Number     math.HexOrDecimal64
 	Difficulty *math.HexOrDecimal256
-	BaseFee    *math.HexOrDecimal256
 	Alloc      map[common.UnprefixedAddress]GenesisAccount
 }
 
@@ -158,7 +156,7 @@ func SetupGenesisBlock(db ethdb.Database, genesis *Genesis) (*params.ChainConfig
 	return SetupGenesisBlockWithOverride(db, genesis, nil)
 }
 
-func SetupGenesisBlockWithOverride(db ethdb.Database, genesis *Genesis, overrideLondon *big.Int) (*params.ChainConfig, common.Hash, error) {
+func SetupGenesisBlockWithOverride(db ethdb.Database, genesis *Genesis, overrideBerlin *big.Int) (*params.ChainConfig, common.Hash, error) {
 	if genesis != nil && genesis.Config == nil {
 		return params.AllEthashProtocolChanges, common.Hash{}, errGenesisNoConfig
 	}
@@ -204,8 +202,8 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, genesis *Genesis, override
 	}
 	// Get the existing chain configuration.
 	newcfg := genesis.configOrDefault(stored)
-	if overrideLondon != nil {
-		newcfg.LondonBlock = overrideLondon
+	if overrideBerlin != nil {
+		newcfg.BerlinBlock = overrideBerlin
 	}
 	if err := newcfg.CheckConfigForkOrder(); err != nil {
 		return newcfg, common.Hash{}, err
@@ -248,8 +246,8 @@ func (g *Genesis) configOrDefault(ghash common.Hash) *params.ChainConfig {
 		return params.RinkebyChainConfig
 	case ghash == params.GoerliGenesisHash:
 		return params.GoerliChainConfig
-	case ghash == params.CalaverasGenesisHash:
-		return params.CalaverasChainConfig
+	case ghash == params.YoloV3GenesisHash:
+		return params.YoloV3ChainConfig
 	default:
 		return params.AllEthashProtocolChanges
 	}
@@ -261,10 +259,7 @@ func (g *Genesis) ToBlock(db ethdb.Database) *types.Block {
 	if db == nil {
 		db = rawdb.NewMemoryDatabase()
 	}
-	statedb, err := state.New(common.Hash{}, state.NewDatabase(db), nil)
-	if err != nil {
-		panic(err)
-	}
+	statedb, _ := state.New(common.Hash{}, state.NewDatabase(db), nil)
 	for addr, account := range g.Alloc {
 		statedb.AddBalance(addr, account.Balance)
 		statedb.SetCode(addr, account.Code)
@@ -282,7 +277,6 @@ func (g *Genesis) ToBlock(db ethdb.Database) *types.Block {
 		Extra:      g.ExtraData,
 		GasLimit:   g.GasLimit,
 		GasUsed:    g.GasUsed,
-		BaseFee:    g.BaseFee,
 		Difficulty: g.Difficulty,
 		MixDigest:  g.Mixhash,
 		Coinbase:   g.Coinbase,
@@ -293,13 +287,6 @@ func (g *Genesis) ToBlock(db ethdb.Database) *types.Block {
 	}
 	if g.Difficulty == nil {
 		head.Difficulty = params.GenesisDifficulty
-	}
-	if g.Config != nil && g.Config.IsLondon(common.Big0) {
-		if g.BaseFee != nil {
-			head.BaseFee = g.BaseFee
-		} else {
-			head.BaseFee = new(big.Int).SetUint64(params.InitialBaseFee)
-		}
 	}
 	statedb.Commit(false)
 	statedb.Database().TrieDB().Commit(root, true, nil)
@@ -344,10 +331,7 @@ func (g *Genesis) MustCommit(db ethdb.Database) *types.Block {
 
 // GenesisBlockForTesting creates and writes a block in which addr has the given wei balance.
 func GenesisBlockForTesting(db ethdb.Database, addr common.Address, balance *big.Int) *types.Block {
-	g := Genesis{
-		Alloc:   GenesisAlloc{addr: {Balance: balance}},
-		BaseFee: big.NewInt(params.InitialBaseFee),
-	}
+	g := Genesis{Alloc: GenesisAlloc{addr: {Balance: balance}}}
 	return g.MustCommit(db)
 }
 
@@ -399,15 +383,15 @@ func DefaultGoerliGenesisBlock() *Genesis {
 	}
 }
 
-func DefaultCalaverasGenesisBlock() *Genesis {
+func DefaultYoloV3GenesisBlock() *Genesis {
 	// Full genesis: https://gist.github.com/holiman/c6ed9269dce28304ad176314caa75e97
 	return &Genesis{
-		Config:     params.CalaverasChainConfig,
-		Timestamp:  0x60b3877f,
-		ExtraData:  hexutil.MustDecode("0x00000000000000000000000000000000000000000000000000000000000000005211cea3870c7ba7c6c44b185e62eecdb864cd8c560228ce57d31efbf64c200b2c200aacec78cf17a7148e784fe95a7a750335f8b9572ee28d72e7650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
+		Config:     params.YoloV3ChainConfig,
+		Timestamp:  0x6027dd2e,
+		ExtraData:  hexutil.MustDecode("0x00000000000000000000000000000000000000000000000000000000000000001041afbcb359d5a8dc58c15b2ff51354ff8a217d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
 		GasLimit:   0x47b760,
 		Difficulty: big.NewInt(1),
-		Alloc:      decodePrealloc(calaverasAllocData),
+		Alloc:      decodePrealloc(yoloV3AllocData),
 	}
 }
 
@@ -415,17 +399,13 @@ func DefaultCalaverasGenesisBlock() *Genesis {
 func DeveloperGenesisBlock(period uint64, faucet common.Address) *Genesis {
 	// Override the default period to the user requested one
 	config := *params.AllCliqueProtocolChanges
-	config.Clique = &params.CliqueConfig{
-		Period: period,
-		Epoch:  config.Clique.Epoch,
-	}
+	config.Clique.Period = period
 
 	// Assemble and return the genesis with the precompiles and faucet pre-funded
 	return &Genesis{
 		Config:     &config,
 		ExtraData:  append(append(make([]byte, 32), faucet[:]...), make([]byte, crypto.SignatureLength)...),
 		GasLimit:   11500000,
-		BaseFee:    big.NewInt(params.InitialBaseFee),
 		Difficulty: big.NewInt(1),
 		Alloc: map[common.Address]GenesisAccount{
 			common.BytesToAddress([]byte{1}): {Balance: big.NewInt(1)}, // ECRecover
