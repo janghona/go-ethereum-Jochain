@@ -331,12 +331,8 @@ func (f *BlockFetcher) FilterBodies(peer string, transactions [][]*types.Transac
 // events.
 func (f *BlockFetcher) loop() {
 	// Iterate the block fetching until a quit is requested
-	var (
-		fetchTimer    = time.NewTimer(0)
-		completeTimer = time.NewTimer(0)
-	)
-	<-fetchTimer.C // clear out the channel
-	<-completeTimer.C
+	fetchTimer := time.NewTimer(0)
+	completeTimer := time.NewTimer(0)
 	defer fetchTimer.Stop()
 	defer completeTimer.Stop()
 
@@ -833,17 +829,15 @@ func (f *BlockFetcher) importBlocks(peer string, block *types.Block) {
 // internal state.
 func (f *BlockFetcher) forgetHash(hash common.Hash) {
 	// Remove all pending announces and decrement DOS counters
-	if announceMap, ok := f.announced[hash]; ok {
-		for _, announce := range announceMap {
-			f.announces[announce.origin]--
-			if f.announces[announce.origin] <= 0 {
-				delete(f.announces, announce.origin)
-			}
+	for _, announce := range f.announced[hash] {
+		f.announces[announce.origin]--
+		if f.announces[announce.origin] <= 0 {
+			delete(f.announces, announce.origin)
 		}
-		delete(f.announced, hash)
-		if f.announceChangeHook != nil {
-			f.announceChangeHook(hash, false)
-		}
+	}
+	delete(f.announced, hash)
+	if f.announceChangeHook != nil {
+		f.announceChangeHook(hash, false)
 	}
 	// Remove any pending fetches and decrement the DOS counters
 	if announce := f.fetching[hash]; announce != nil {
