@@ -97,7 +97,7 @@ function init() {
      const toString = await post.toString();
     const strArray = toString.split(",");
 
-    const time = strArray[4] * 1000;
+    const time = strArray[5] * 1000;
     document.getElementById("num").innerText =strArray[0];
     // document.getElementById("name").innerText =strArray[0];
     document.getElementById("name").innerText ="testUser";

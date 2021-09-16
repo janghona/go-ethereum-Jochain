@@ -13,6 +13,13 @@
         display: none;
     }
 
+    .board_list .account{
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
     .board_list .date{
         width: 40%;
     }

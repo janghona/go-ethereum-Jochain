@@ -64,6 +64,8 @@ margin-left: 0;
     border-top: 2px solid #955;
 }
 
+
+
 .board_list >div{
     border-bottom: 1px solid #ddd;
     font-size: 0;
@@ -107,6 +109,10 @@ font-weight: 600;
 
 .board_list .account{
     width: 10%;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .board_list .date{
