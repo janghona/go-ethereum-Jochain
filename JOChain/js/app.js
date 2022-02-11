@@ -6,12 +6,24 @@ if (web3.isConnected()) {
   console.log("connected");
 } else {
   console.log("not connected");
-  exit;
+  //exit;
 }
 
-const contractAddress = "0x24db68325B91f28945DD73838d2aC8D590F46b64";
+//IPFS 연동 
+/*
+const IPFS = require('');
+const ipfs = new IPFS({ 
+  host:'ipfs.infura.io',
+  port:5001,
+  protocol:'https'
+});
+console.log(ipfs);
+*/
+
+const contractAddress = "0xE00853A03828f1B5d503d28b87544c69f3F48417";
 const smartContract = web3.eth.contract(abi).at(contractAddress);
 var num = 0;
+
 
 function init() {
     // 첫번째 계정으로 주소 설정
@@ -46,7 +58,6 @@ function init() {
      cell6.innerHTML = strArray[4];
      cell5.style.width = "60%";
      cell5.innerHTML = moment(time).format("YYYY-MM-DD hh:mm");
-    
   }
 
 
@@ -113,4 +124,3 @@ function init() {
   $(function() {
     init();
   });
-  
